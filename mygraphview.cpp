@@ -14,6 +14,9 @@ MyGraphView::MyGraphView()
     scene = new QGraphicsScene();   // Инициализируем сцену для отрисовки
     this->setScene(scene);          // Устанавливаем сцену в виджет
 
+    Delyana *d = new Delyana(QPoint(200,200), 40, 200, 150);
+    scene->addItem(d);
+
     //Road *firstRoad = new Road(10, 10, 180, 180, 120, 80);
     //scene->addItem(firstRoad);
     //EmptyPoint *firstPoint = new EmptyPoint(QPoint(20, 20));

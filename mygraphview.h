@@ -6,6 +6,7 @@
 #include <QMenu>
 #include "road.h"
 #include "emptypoint.h"
+#include "delyana.h"
 
 
 class MyGraphView : public QGraphicsView

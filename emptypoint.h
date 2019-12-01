@@ -7,7 +7,8 @@
 class EmptyPoint: public QGraphicsItem
 {
 public:
-    EmptyPoint(QPoint pos);
+    EmptyPoint();
+    explicit EmptyPoint(QPoint pos);
     ~EmptyPoint();
 
     QRectF boundingRect() const;

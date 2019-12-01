@@ -1,5 +1,9 @@
 #include "emptypoint.h"
 
+EmptyPoint::EmptyPoint(){
+
+}
+
 EmptyPoint::EmptyPoint(QPoint pos)
 {
     this->pos = pos;
