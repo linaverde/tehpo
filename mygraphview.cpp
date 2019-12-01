@@ -17,6 +17,9 @@ MyGraphView::MyGraphView()
     Delyana *d = new Delyana(QPoint(200,200), 40, 200, 150);
     scene->addItem(d);
 
+    Delyana *v = new Delyana(QPoint(200,300), 40, 200, 150);
+    scene->addItem(v);
+
     //Road *firstRoad = new Road(10, 10, 180, 180, 120, 80);
     //scene->addItem(firstRoad);
     //EmptyPoint *firstPoint = new EmptyPoint(QPoint(20, 20));
@@ -51,4 +54,10 @@ void MyGraphView::showContextMenu(const QPoint &pos){
 
 void MyGraphView::addPointSlot(){
     addPoint(new EmptyPoint(lastClicked));
+}
+
+void MyGraphView::addDelyand(Delyana *delyana){
+    points.push_back(delyana);
+    scene->addItem(delyana);
+    scene->update();
 }

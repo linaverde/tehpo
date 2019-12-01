@@ -19,8 +19,8 @@ void EmptyPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
     painter->draw; */
 
     QRect r(0,0, 10,10);
-    r.moveCenter(pos);
     painter->drawEllipse(r);
+    this->setPos(pos);
 }
 
 QRectF EmptyPoint::boundingRect() const{

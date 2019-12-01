@@ -18,6 +18,7 @@ public:
 
     void addRoad(Road *road);
     void addPoint(EmptyPoint *point);
+    void addDelyand(Delyana *delyana);
 
 
 private:

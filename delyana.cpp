@@ -25,13 +25,12 @@ void Delyana::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     if (pixmap.load("D:/qt/projects/tehrazpo/tree.jpg"))
     {
         QRect r (0, 0, 20, 30);
-        r.moveTopLeft(pos);
         painter->drawPixmap(r, pixmap);
-        this->setToolTip(QString::number(currentCount) + " ед. леса<br>Цена за ед.: "
-                         + QString::number(price) + "руб<br>Выработка " + QString::number(cpd) + "ед. в день");
+        this->setPos(pos);
     }
 }
 
 QRectF Delyana::boundingRect() const{
-    return QRectF(0, 0, 20, 30);
+    QRectF r(0, 0, 20, 30);
+    return r;
 }
