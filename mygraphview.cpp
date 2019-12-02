@@ -1,29 +1,20 @@
 #include "mygraphview.h"
+#include <iostream>
 
 MyGraphView::MyGraphView()
 {
+    status = free;
     /* Немного поднастроим отображение виджета и его содержимого */
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Отключим скроллбар по горизонтали
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);   // Отключим скроллбар по вертикали
     this->setAlignment(Qt::AlignLeft|Qt::AlignTop);                        // Делаем привязку содержимого
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(showContextMenu(const QPoint &)));
 
     scene = new QGraphicsScene();   // Инициализируем сцену для отрисовки
     this->setScene(scene);          // Устанавливаем сцену в виджет
 
-    Delyana *d = new Delyana(QPoint(200,200), 40, 200, 150);
-    scene->addItem(d);
-
-    Delyana *v = new Delyana(QPoint(200,300), 40, 200, 150);
-    scene->addItem(v);
-
-    //Road *firstRoad = new Road(10, 10, 180, 180, 120, 80);
-    //scene->addItem(firstRoad);
-    //EmptyPoint *firstPoint = new EmptyPoint(QPoint(20, 20));
-    //scene->addItem(firstPoint);
 }
 
 MyGraphView::~MyGraphView(){
@@ -42,22 +33,76 @@ void MyGraphView::addPoint(EmptyPoint *point){
     scene->update();
 }
 
-void MyGraphView::showContextMenu(const QPoint &pos){
-    lastClicked = pos;
-    QMenu contextMenu(tr("Context menu"), this);
-    QAction addPoint("Добавить вершину", this);
-    connect(&addPoint, SIGNAL(triggered()), this, SLOT(addPointSlot()));
-    contextMenu.addAction(&addPoint);
+void MyGraphView::deletePoint(QPoint pos){
+    QGraphicsItem *item = scene->itemAt(pos, QTransform());
+    for(int i = 0; i < points.length(); i++){
+        if (points.at(i) == item){
+            points.remove(i);
+            break;
+        }
+    }
+    scene->removeItem(item);
+    delete item;
+    scene->update();
+}
 
-    contextMenu.exec(mapToGlobal(pos));
+void MyGraphView::showContextMenu(const QPoint &pos){
+    lastClickedRightMouseButtonPos = pos;
+    if (status == free){
+        QGraphicsItem *item = scene->itemAt(pos, QTransform());
+        if (item == nullptr || !points.contains(item)){
+            QMenu contextMenu(tr("Context menu"), this);
+            QAction addPoint("Добавить вершину", this);
+            QAction addDelyana("Добавить деляну", this);
+            connect(&addPoint, SIGNAL(triggered()), this, SLOT(addPointSlot()));
+            connect(&addDelyana, SIGNAL(triggered()), this, SLOT(delyanaDialogSlot()));
+            contextMenu.addAction(&addPoint);
+            contextMenu.addAction(&addDelyana);
+            contextMenu.exec(mapToGlobal(pos));
+        } else if (points.contains(item)){
+            QMenu contextMenu(tr("Context menu"), this);
+            QAction createRoad("Создать дорогу", this);
+            QAction remove("Удалить", this);
+            connect(&remove, SIGNAL(triggered()), this, SLOT(deletePointSlot()));
+            connect(&createRoad, SIGNAL(triggered()), this, SLOT(addRoadSlot()));
+            contextMenu.addAction(&createRoad);
+            contextMenu.addAction(&remove);
+            contextMenu.exec(mapToGlobal(pos));
+        }
+    }
+}
+
+void MyGraphView::addRoadSlot(){
+    status = waitingForRoadEndPoint;
+
+}
+
+void MyGraphView::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    QGraphicsItem *item = itemAt(event->pos());
+    if (item != nullptr && status == waitingForRoadEndPoint) {
+        addRoad(new Road(lastClickedRightMouseButtonPos, event->pos(), 99, 9));
+        status = free;
+    }
 }
 
 void MyGraphView::addPointSlot(){
-    addPoint(new EmptyPoint(lastClicked));
+    addPoint(new EmptyPoint(lastClickedRightMouseButtonPos));
 }
 
-void MyGraphView::addDelyand(Delyana *delyana){
-    points.push_back(delyana);
-    scene->addItem(delyana);
+void MyGraphView::deletePointSlot(){
+    deletePoint(lastClickedRightMouseButtonPos);
+}
+
+void MyGraphView::delyanaDialogSlot(){
+    DialogDelyana *d = new DialogDelyana(this);
+    if (d->exec() == QDialog::Accepted){
+        addDelyan(new Delyana(lastClickedRightMouseButtonPos, d->getCpd(), d->getCurr(), d->getPrice()));
+    }
+}
+
+void MyGraphView::addDelyan(Delyana *d){
+    scene->addItem(d);
+    points.push_back(d);
     scene->update();
 }

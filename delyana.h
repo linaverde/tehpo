@@ -6,7 +6,7 @@
 class Delyana : public EmptyPoint
 {
 public:
-    explicit Delyana(QPoint pos, unsigned int cpd, unsigned int currCount, unsigned int price);
+    explicit Delyana(QPoint pos, int cpd, int currCount, int price);
     ~Delyana();
 
     QRectF boundingRect() const;
@@ -16,11 +16,10 @@ public:
                    QWidget * widget);
 
 private:
-    QRectF m_boundRect;
     QPoint pos;
-    unsigned int cpd;
-    unsigned int currentCount;
-    unsigned int price;
+    int cpd;
+    int currentCount;
+    int price;
 };
 
 #endif // DELYANA_H

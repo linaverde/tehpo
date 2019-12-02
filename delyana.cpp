@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Delyana::Delyana(QPoint pos, unsigned int cpd, unsigned int currCount, unsigned int price)
+Delyana::Delyana(QPoint pos, int cpd, int currCount, int price)
 {
     this->pos = pos;
     this->cpd = cpd;

@@ -3,6 +3,8 @@
 
 #include <QGraphicsItem>
 #include <QGraphicsView>
+#include <QContextMenuEvent>
+#include <QMenu>
 
 class EmptyPoint: public QGraphicsItem
 {
@@ -19,6 +21,10 @@ public:
 
 private:
     QPoint pos;
+
+
+public slots:
+    //void contextMenuEvent ( QGraphicsSceneContextMenuEvent * event );
 };
 
 #endif // EMPTYPOINT_H

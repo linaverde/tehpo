@@ -8,7 +8,7 @@
 class Road : public QGraphicsItem
 {
 public:
-    Road(int x1, int y1, int x2, int y2, unsigned int km, unsigned int price);
+    Road(QPoint start, QPoint end, unsigned int km, unsigned int price);
     ~Road();
 
     QRectF boundingRect() const;
