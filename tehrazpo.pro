@@ -20,6 +20,7 @@ SOURCES += \
     dialogdelyana.cpp \
     dialogroad.cpp \
     emptypoint.cpp \
+    garage.cpp \
     main.cpp \
     mainwindow.cpp \
     mygraphview.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     dialogdelyana.h \
     dialogroad.h \
     emptypoint.h \
+    garage.h \
     mainwindow.h \
     mygraphview.h \
     office.h \

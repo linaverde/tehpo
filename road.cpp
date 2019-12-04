@@ -33,3 +33,11 @@ QRectF Road::boundingRect() const
 void Road::updateTip(){
     this->setToolTip(QString::number(km) + " километров<br>Цена проезда: " + QString::number(price) + "руб");
 }
+
+EmptyPoint* Road::getStartPoint(){
+    return start;
+}
+
+EmptyPoint* Road::getEndPoint(){
+    return end;
+}

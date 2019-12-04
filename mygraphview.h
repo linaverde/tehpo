@@ -9,6 +9,7 @@
 #include "dialogdelyana.h"
 #include "dialogroad.h"
 #include "office.h"
+#include "garage.h"
 
 
 class MyGraphView : public QGraphicsView
@@ -18,11 +19,12 @@ public:
     MyGraphView();
     ~MyGraphView();
 
-    void addRoad(Road *road);
-    void addPoint(EmptyPoint *point);
-    void addOffice(Office *office);
+    void addRoad(Road *);
+    void addPoint(EmptyPoint *p);
+    void addOffice(Office *o);
     void deletePoint(QPoint pos);
     void addDelyan(Delyana *d);
+    void addGarage(Garage *g);
 
 
 private:
@@ -41,6 +43,7 @@ public slots:
     void deletePointSlot();
     void delyanaDialogSlot();
     void addRoadSlot();
+    void addGarageSlot();
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 };
 

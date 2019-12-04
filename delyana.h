@@ -7,17 +7,17 @@ class Delyana : public EmptyPoint
 {
 public:
     explicit Delyana(QPoint pos, int cpd, int currCount, int price);
-    ~Delyana();
+    ~Delyana() override;
 
-    QRectF boundingRect() const;
+    QRectF boundingRect() const override;
 
     void paint(QPainter * painter,
                    const QStyleOptionGraphicsItem * option,
-                   QWidget * widget);
+                   QWidget * widget) override;
 
-    QPoint getPos();
-    QVector <Road*> getRoads();
-    void addRoad(Road* r);
+    QPoint getPos() override;
+    QVector <Road*> getRoads() override;
+    void addRoad(Road* r) override;
 
 private:
     QPoint pos;

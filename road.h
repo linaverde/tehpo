@@ -14,11 +14,14 @@ public:
     explicit Road(EmptyPoint* start, EmptyPoint* end, QPoint startP, QPoint endP,  int km, int price);
     ~Road();
 
-    QRectF boundingRect() const;
+    QRectF boundingRect() const override;
 
     void paint(QPainter * painter,
                    const QStyleOptionGraphicsItem * option,
-                   QWidget * widget);
+                   QWidget * widget) override;
+
+    EmptyPoint* getStartPoint();
+    EmptyPoint* getEndPoint();
 
 private:
     EmptyPoint* start, *end;

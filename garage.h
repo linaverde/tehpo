@@ -1,14 +1,14 @@
-#ifndef OFFICE_H
-#define OFFICE_H
+#ifndef GARAGE_H
+#define GARAGE_H
 
 #include "emptypoint.h"
 
-class Office: public EmptyPoint
+
+class Garage: public EmptyPoint
 {
 public:
-    explicit Office(QPoint pos);
-    ~Office();
-
+    Garage(QPoint pos);
+    ~Garage();
     QRectF boundingRect() const override;
 
     void paint(QPainter * painter,
@@ -25,4 +25,4 @@ private:
 
 };
 
-#endif // OFFICE_H
+#endif // GARAGE_H

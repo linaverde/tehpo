@@ -1,5 +1,6 @@
 #include "mygraphview.h"
 #include <iostream>
+#include <QErrorMessage>
 
 MyGraphView::MyGraphView()
 {
@@ -21,15 +22,24 @@ MyGraphView::~MyGraphView(){
 
 }
 
-void MyGraphView::addRoad(Road *road){
-    roads.push_back(road);
-    this->scene->addItem(road);
+bool hasRoad(EmptyPoint* p, QVector <Road*> roads){
+    foreach (Road* r, roads) {
+        if(r->getStartPoint() == p || r->getEndPoint() == p){
+            return true;
+        }
+    }
+    return false;
+}
+
+void MyGraphView::addRoad(Road *r){
+    roads.push_back(r);
+    this->scene->addItem(r);
     scene->update();
 }
 
-void MyGraphView::addPoint(EmptyPoint *point){
-    points.push_back(point);
-    this->scene->addItem(point);
+void MyGraphView::addPoint(EmptyPoint *p){
+    points.push_back(p);
+    this->scene->addItem(p);
     scene->update();
 }
 
@@ -57,12 +67,15 @@ void MyGraphView::showContextMenu(const QPoint &pos){
             QAction addPoint("Добавить вершину", this);
             QAction addDelyana("Добавить деляну", this);
             QAction addOffice("Добавить контору", this);
+            QAction addGarage("Добавить гараж", this);
             connect(&addPoint, SIGNAL(triggered()), this, SLOT(addPointSlot()));
             connect(&addOffice, SIGNAL(triggered()), this, SLOT(addOfficeSlot()));
             connect(&addDelyana, SIGNAL(triggered()), this, SLOT(delyanaDialogSlot()));
+            connect(&addGarage, SIGNAL(triggered()), this, SLOT(addGarageSlot()));
             contextMenu.addAction(&addPoint);
             contextMenu.addAction(&addOffice);
             contextMenu.addAction(&addDelyana);
+            contextMenu.addAction(&addGarage);
             contextMenu.exec(mapToGlobal(pos));
         } else if (points.contains(item)){
             QMenu contextMenu(tr("Context menu"), this);
@@ -86,10 +99,12 @@ void MyGraphView::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (EmptyPoint *end = dynamic_cast<EmptyPoint*>(itemAt(event->pos()))){
         if (end != nullptr && status == waitingForRoadEndPoint) {
-            DialogRoad *d = new DialogRoad(this);
-            if (d->exec() == QDialog::Accepted){
-                EmptyPoint *start = dynamic_cast<EmptyPoint*>(itemAt(lastClickedRightMouseButtonPos));
-                Road *r = new Road(start, end, lastClickedRightMouseButtonPos, event->pos(), d->getKm(), d->getPrice());
+          EmptyPoint *start = dynamic_cast<EmptyPoint*>(itemAt(lastClickedRightMouseButtonPos));
+            if (start != end){
+                if (!hasRoad(end, start->getRoads())){
+                DialogRoad *d = new DialogRoad(this);
+                if (d->exec() == QDialog::Accepted){
+                 Road *r = new Road(start, end, lastClickedRightMouseButtonPos, event->pos(), d->getKm(), d->getPrice());
                 addRoad(r);
                 start->addRoad(r);
                 end->addRoad(r);
@@ -98,6 +113,16 @@ void MyGraphView::mouseDoubleClickEvent(QMouseEvent *event)
                 scene->removeItem(end);
                 scene->addItem(end);
                 scene->update();
+            }
+                } else {
+                    QErrorMessage *e = new QErrorMessage(this);
+                    e->setWindowTitle("Ошибка создания дороги");
+                    e->showMessage("Такая дорога уже существует!");
+                }
+             } else {
+                QErrorMessage *e = new QErrorMessage(this);
+                e->setWindowTitle("Ошибка создания дороги");
+                e->showMessage("Нельзя провести дорогу в ту же точку");
             }
         }
     }
@@ -116,6 +141,11 @@ void MyGraphView::addOfficeSlot(){
     addOffice(new Office(lastClickedRightMouseButtonPos));
 }
 
+void MyGraphView::addGarageSlot(){
+    addGarage(new Garage(lastClickedRightMouseButtonPos));
+}
+
+
 void MyGraphView::delyanaDialogSlot(){
     DialogDelyana *d = new DialogDelyana(this);
     if (d->exec() == QDialog::Accepted){
@@ -129,8 +159,15 @@ void MyGraphView::addDelyan(Delyana *d){
     scene->update();
 }
 
-void MyGraphView::addOffice(Office *office){
-    scene->addItem(office);
-    points.push_back(office);
+void MyGraphView::addOffice(Office *o){
+    scene->addItem(o);
+    points.push_back(o);
     scene->update();
 }
+
+void MyGraphView::addGarage(Garage *g){
+    scene->addItem(g);
+    points.push_back(g);
+    scene->update();
+}
+
