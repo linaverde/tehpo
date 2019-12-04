@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "delyana.h"
+#include <QIntValidator>
 
 namespace Ui {
 class DialogDelyana;
@@ -22,6 +23,7 @@ public:
 private:
     Ui::DialogDelyana *ui;
     QWidget *parent;
+    QIntValidator valya;
 
 };
 

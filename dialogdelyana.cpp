@@ -5,14 +5,15 @@
 
 DialogDelyana::DialogDelyana(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::DialogDelyana)
+    ui(new Ui::DialogDelyana),
+    valya(0,10000,this)
 {
-    //ui->priceLineEdit->setValidator(new QRegExpValidator(QRegExp("[0-9]*"), ui->priceLineEdit));
-    //ui->cpdLineEdit->setValidator(new QRegExpValidator(QRegExp("[0-9]*"), ui->cpdLineEdit));
-    //ui->currentLineEdit->setValidator(new QRegExpValidator(QRegExp("[0-9]*"), ui->currentLineEdit));
     this->parent = parent;
     ui->setupUi(this);
 
+    ui->priceLineEdit->setValidator(&valya);
+    ui->cpdLineEdit->setValidator(&valya);
+    ui->currentLineEdit->setValidator(&valya);
 }
 
 DialogDelyana::~DialogDelyana()
