@@ -15,11 +15,17 @@ public:
                    const QStyleOptionGraphicsItem * option,
                    QWidget * widget);
 
+    QPoint getPos();
+    QVector <Road*> getRoads();
+    void addRoad(Road* r);
+
 private:
     QPoint pos;
+    QVector <Road*> roads;
     int cpd;
     int currentCount;
     int price;
+
 };
 
 #endif // DELYANA_H

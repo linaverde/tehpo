@@ -4,7 +4,6 @@
 #include <QGraphicsView>
 #include <QContextMenuEvent>
 #include <QMenu>
-#include "road.h"
 #include "emptypoint.h"
 #include "delyana.h"
 #include "dialogdelyana.h"

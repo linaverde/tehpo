@@ -6,7 +6,7 @@ EmptyPoint::EmptyPoint(){
 
 EmptyPoint::EmptyPoint(QPoint pos)
 {
-    this->pos = pos;
+    this->pos = QPoint(pos.x()-5, pos.y()-5);
 }
 
 EmptyPoint::~EmptyPoint(){
@@ -24,17 +24,15 @@ QRectF EmptyPoint::boundingRect() const{
     return QRectF(0, 0, 10, 10);
 }
 
-//void EmptyPoint::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event ){
-//    QMenu menu;
-//    QAction *removePoint = menu.addAction("Удалить вершину");
-//    QAction *addRoad = menu.addAction("Добавить дорогу");
-//    menu.exec(QCursor::pos());
-//    //contextMenu.exec(mapToGlobal(pos));
-//}
+QPoint EmptyPoint::getPos(){
+    return pos;
+}
 
-//void EmptyPoint::showContextMenu(QPoint *pos){
-//    QMenu menu;
-//    QAction *removePoint = menu.addAction("Удалить вершину");
-//    QAction *addRoad = menu.addAction("Добавить дорогу");
-//    menu.exec(QCursor::pos());
-//}
+
+QVector <Road*> EmptyPoint::getRoads(){
+    return roads;
+}
+
+void EmptyPoint::addRoad(Road* r){
+    roads.push_back(r);
+}

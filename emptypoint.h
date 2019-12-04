@@ -5,6 +5,9 @@
 #include <QGraphicsView>
 #include <QContextMenuEvent>
 #include <QMenu>
+#include "road.h"
+
+class Road;
 
 class EmptyPoint: public QGraphicsItem
 {
@@ -19,12 +22,16 @@ public:
                    const QStyleOptionGraphicsItem * option,
                    QWidget * widget);
 
+    virtual QPoint getPos();
+    virtual QVector <Road*> getRoads();
+    virtual void addRoad(Road* r);
+
 private:
     QPoint pos;
-
+    QVector <Road*> roads;
 
 public slots:
-    //void contextMenuEvent ( QGraphicsSceneContextMenuEvent * event );
+
 };
 
 #endif // EMPTYPOINT_H

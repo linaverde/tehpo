@@ -79,9 +79,13 @@ void MyGraphView::addRoadSlot(){
 
 void MyGraphView::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    QGraphicsItem *item = itemAt(event->pos());
-    if (item != nullptr && status == waitingForRoadEndPoint) {
-        addRoad(new Road(lastClickedRightMouseButtonPos, event->pos(), 99, 9));
+    EmptyPoint *end = dynamic_cast<EmptyPoint*>(itemAt(event->pos()));
+    if (end != nullptr && status == waitingForRoadEndPoint) {
+        EmptyPoint *start = dynamic_cast<EmptyPoint*>(itemAt(lastClickedRightMouseButtonPos));
+        Road *r = new Road(start, end, 99, 9);
+        addRoad(r);
+        start->addRoad(r);
+        end->addRoad(r);
         status = free;
     }
 }

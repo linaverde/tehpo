@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     delyana.cpp \
     dialogdelyana.cpp \
+    dialogroad.cpp \
     emptypoint.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 HEADERS += \
     delyana.h \
     dialogdelyana.h \
+    dialogroad.h \
     emptypoint.h \
     mainwindow.h \
     mygraphview.h \
@@ -34,6 +36,7 @@ HEADERS += \
 
 FORMS += \
     dialogdelyana.ui \
+    dialogroad.ui \
     mainwindow.ui
 
 # Default rules for deployment.

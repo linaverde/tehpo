@@ -1,7 +1,7 @@
 #include "road.h"
 
 
-Road::Road(QPoint start, QPoint end, unsigned int km, unsigned int price)
+Road::Road(EmptyPoint* start, EmptyPoint* end, unsigned int km, unsigned int price)
 {
     this->start = start;
     this->end = end;
@@ -16,18 +16,16 @@ Road::~Road(){
 
 void Road::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    //QRectF rect = boundingRect();
-
-    QPen pen(Qt::red, 4);
+    QPen pen(Qt::red, 2);
     painter->setPen(pen);
-    painter->drawLine(start, end);
+    //this->setPos(QPoint(qMin(start->getPos().x(), end->getPos().x()), qMin(start->getPos().y(), end->getPos().y())));
+    painter->drawLine(start->getPos(), end->getPos());
 
 }
 
 QRectF Road::boundingRect() const
 {
-    // outer most edges
-    return QRectF(qMin(start.x(), end.x()), qMin(start.y(), end.y()), qMax(start.x(), end.x()), qMax(start.y(), end.y()));
+    return QRectF(0, 0, abs(start->getPos().x() - end->getPos().x()), abs(start->getPos().y() - end->getPos().y()));
 }
 
 void Road::updateTip(){

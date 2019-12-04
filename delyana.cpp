@@ -4,7 +4,7 @@
 
 Delyana::Delyana(QPoint pos, int cpd, int currCount, int price)
 {
-    this->pos = pos;
+    this->pos = QPoint(pos.x()+10, pos.y()+15);
     this->cpd = cpd;
     this->currentCount = currCount;
     this->price = price;
@@ -34,3 +34,17 @@ QRectF Delyana::boundingRect() const{
     QRectF r(0, 0, 20, 30);
     return r;
 }
+
+QPoint Delyana::getPos(){
+    return pos;
+}
+
+QVector <Road*> Delyana::getRoads(){
+    return roads;
+}
+
+void Delyana::addRoad(Road* r){
+    roads.push_back(r);
+}
+
+

@@ -3,12 +3,15 @@
 
 #include <QGraphicsItem>
 #include <QGraphicsView>
+#include "emptypoint.h"
 
+class EmptyPoint;
 
 class Road : public QGraphicsItem
 {
 public:
-    Road(QPoint start, QPoint end, unsigned int km, unsigned int price);
+    Road();
+    explicit Road(EmptyPoint* start, EmptyPoint* end, unsigned int km, unsigned int price);
     ~Road();
 
     QRectF boundingRect() const;
@@ -18,8 +21,8 @@ public:
                    QWidget * widget);
 
 private:
-    QPoint start;
-    QPoint end;
+    EmptyPoint* start;
+    EmptyPoint* end;
     unsigned int price;
     unsigned int km;
 
