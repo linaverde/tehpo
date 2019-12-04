@@ -16,13 +16,12 @@ class DialogDelyana : public QDialog
 public:
     explicit DialogDelyana(QWidget *parent = nullptr);
     ~DialogDelyana();
-    unsigned int getCurr();
-    unsigned int getCpd();
-    unsigned int getPrice();
+    int getCurr();
+    int getCpd();
+    int getPrice();
 
 private:
     Ui::DialogDelyana *ui;
-    QWidget *parent;
     QIntValidator valya;
 
 };

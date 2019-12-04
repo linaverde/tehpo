@@ -4,7 +4,7 @@
 
 Delyana::Delyana(QPoint pos, int cpd, int currCount, int price)
 {
-    this->pos = QPoint(pos.x()+10, pos.y()+15);
+    this->pos = pos;
     this->cpd = cpd;
     this->currentCount = currCount;
     this->price = price;
@@ -17,9 +17,6 @@ Delyana::~Delyana(){
 }
 
 void Delyana::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
-    /*QPen pen(Qt::red, 4);
-    painter->setPen(pen);
-    painter->draw; */
 
     QPixmap pixmap;
     if (pixmap.load("D:/qt/projects/tehrazpo/tree.jpg"))

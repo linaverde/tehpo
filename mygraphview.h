@@ -7,6 +7,8 @@
 #include "emptypoint.h"
 #include "delyana.h"
 #include "dialogdelyana.h"
+#include "dialogroad.h"
+#include "office.h"
 
 
 class MyGraphView : public QGraphicsView
@@ -18,6 +20,7 @@ public:
 
     void addRoad(Road *road);
     void addPoint(EmptyPoint *point);
+    void addOffice(Office *office);
     void deletePoint(QPoint pos);
     void addDelyan(Delyana *d);
 
@@ -34,6 +37,7 @@ private:
 public slots:
     void showContextMenu(const QPoint &pos);
     void addPointSlot();
+    void addOfficeSlot();
     void deletePointSlot();
     void delyanaDialogSlot();
     void addRoadSlot();

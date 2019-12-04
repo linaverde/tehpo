@@ -33,6 +33,8 @@ void MyGraphView::addPoint(EmptyPoint *point){
     scene->update();
 }
 
+
+
 void MyGraphView::deletePoint(QPoint pos){
     QGraphicsItem *item = scene->itemAt(pos, QTransform());
     for(int i = 0; i < points.length(); i++){
@@ -54,9 +56,12 @@ void MyGraphView::showContextMenu(const QPoint &pos){
             QMenu contextMenu(tr("Context menu"), this);
             QAction addPoint("Добавить вершину", this);
             QAction addDelyana("Добавить деляну", this);
+            QAction addOffice("Добавить контору", this);
             connect(&addPoint, SIGNAL(triggered()), this, SLOT(addPointSlot()));
+            connect(&addOffice, SIGNAL(triggered()), this, SLOT(addOfficeSlot()));
             connect(&addDelyana, SIGNAL(triggered()), this, SLOT(delyanaDialogSlot()));
             contextMenu.addAction(&addPoint);
+            contextMenu.addAction(&addOffice);
             contextMenu.addAction(&addDelyana);
             contextMenu.exec(mapToGlobal(pos));
         } else if (points.contains(item)){
@@ -79,15 +84,24 @@ void MyGraphView::addRoadSlot(){
 
 void MyGraphView::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    EmptyPoint *end = dynamic_cast<EmptyPoint*>(itemAt(event->pos()));
-    if (end != nullptr && status == waitingForRoadEndPoint) {
-        EmptyPoint *start = dynamic_cast<EmptyPoint*>(itemAt(lastClickedRightMouseButtonPos));
-        Road *r = new Road(start, end, 99, 9);
-        addRoad(r);
-        start->addRoad(r);
-        end->addRoad(r);
-        status = free;
+    if (EmptyPoint *end = dynamic_cast<EmptyPoint*>(itemAt(event->pos()))){
+        if (end != nullptr && status == waitingForRoadEndPoint) {
+            DialogRoad *d = new DialogRoad(this);
+            if (d->exec() == QDialog::Accepted){
+                EmptyPoint *start = dynamic_cast<EmptyPoint*>(itemAt(lastClickedRightMouseButtonPos));
+                Road *r = new Road(start, end, lastClickedRightMouseButtonPos, event->pos(), d->getKm(), d->getPrice());
+                addRoad(r);
+                start->addRoad(r);
+                end->addRoad(r);
+                scene->removeItem(start);
+                scene->addItem(start);
+                scene->removeItem(end);
+                scene->addItem(end);
+                scene->update();
+            }
+        }
     }
+    status = free;
 }
 
 void MyGraphView::addPointSlot(){
@@ -96,6 +110,10 @@ void MyGraphView::addPointSlot(){
 
 void MyGraphView::deletePointSlot(){
     deletePoint(lastClickedRightMouseButtonPos);
+}
+
+void MyGraphView::addOfficeSlot(){
+    addOffice(new Office(lastClickedRightMouseButtonPos));
 }
 
 void MyGraphView::delyanaDialogSlot(){
@@ -108,5 +126,11 @@ void MyGraphView::delyanaDialogSlot(){
 void MyGraphView::addDelyan(Delyana *d){
     scene->addItem(d);
     points.push_back(d);
+    scene->update();
+}
+
+void MyGraphView::addOffice(Office *office){
+    scene->addItem(office);
+    points.push_back(office);
     scene->update();
 }

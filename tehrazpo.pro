@@ -23,6 +23,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mygraphview.cpp \
+    office.cpp \
     road.cpp
 
 HEADERS += \
@@ -32,6 +33,7 @@ HEADERS += \
     emptypoint.h \
     mainwindow.h \
     mygraphview.h \
+    office.h \
     road.h
 
 FORMS += \

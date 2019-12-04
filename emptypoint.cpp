@@ -6,7 +6,7 @@ EmptyPoint::EmptyPoint(){
 
 EmptyPoint::EmptyPoint(QPoint pos)
 {
-    this->pos = QPoint(pos.x()-5, pos.y()-5);
+    this->pos = pos;
 }
 
 EmptyPoint::~EmptyPoint(){
@@ -16,6 +16,9 @@ EmptyPoint::~EmptyPoint(){
 void EmptyPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 
     QRect r(0,0, 10,10);
+    painter->setBrush(Qt::black);
+    QPen pen(Qt::white, 2);
+    painter->setPen(pen);
     painter->drawEllipse(r);
     this->setPos(pos);
 }

@@ -11,7 +11,7 @@ class Road : public QGraphicsItem
 {
 public:
     Road();
-    explicit Road(EmptyPoint* start, EmptyPoint* end, unsigned int km, unsigned int price);
+    explicit Road(EmptyPoint* start, EmptyPoint* end, QPoint startP, QPoint endP,  int km, int price);
     ~Road();
 
     QRectF boundingRect() const;
@@ -21,10 +21,10 @@ public:
                    QWidget * widget);
 
 private:
-    EmptyPoint* start;
-    EmptyPoint* end;
-    unsigned int price;
-    unsigned int km;
+    EmptyPoint* start, *end;
+    QPoint s, e;
+    int price;
+    int km;
 
 
 protected:
