@@ -11,6 +11,7 @@ class Road;
 
 class EmptyPoint: public QGraphicsItem
 {
+    Q_OBJECT
 public:
     EmptyPoint();
     explicit EmptyPoint(QPoint pos);

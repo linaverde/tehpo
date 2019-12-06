@@ -7,7 +7,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    view = new MyGraphView();
+    view = new MyGraphView(ui->spinDate, ui->startBtn);
+    connect(ui->startBtn, SIGNAL(clicked()), view, SLOT(setSceneStatusVector()));
     ui->gridLayout->addWidget(view);
 }
 

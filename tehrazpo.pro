@@ -25,7 +25,8 @@ SOURCES += \
     mainwindow.cpp \
     mygraphview.cpp \
     office.cpp \
-    road.cpp
+    road.cpp \
+    truck.cpp
 
 HEADERS += \
     delyana.h \
@@ -36,7 +37,8 @@ HEADERS += \
     mainwindow.h \
     mygraphview.h \
     office.h \
-    road.h
+    road.h \
+    truck.h
 
 FORMS += \
     dialogdelyana.ui \

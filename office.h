@@ -5,7 +5,9 @@
 
 class Office: public EmptyPoint
 {
+    Q_OBJECT
 public:
+    Office();
     explicit Office(QPoint pos);
     ~Office();
 
@@ -19,9 +21,16 @@ public:
     QVector <Road*> getRoads() override;
     void addRoad(Road* r) override;
 
+    void IncreaceOrder();
+
 private:
     QPoint pos;
     QVector <Road*> roads;
+    int newOrder;
+    int orderTime;
+
+signals:
+    void createOrder();
 
 };
 

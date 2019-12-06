@@ -2,9 +2,11 @@
 #include <iostream>
 #include <QErrorMessage>
 
-MyGraphView::MyGraphView()
+MyGraphView::MyGraphView(QSpinBox *s, QPushButton* btn)
 {
     status = free;
+    this->s = s;
+    this->btn = btn;
     /* Немного поднастроим отображение виджета и его содержимого */
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Отключим скроллбар по горизонтали
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);   // Отключим скроллбар по вертикали
@@ -161,7 +163,7 @@ void MyGraphView::addDelyan(Delyana *d){
 
 void MyGraphView::addOffice(Office *o){
     scene->addItem(o);
-    points.push_back(o);
+    offices.push_back(o);
     scene->update();
 }
 
@@ -171,3 +173,29 @@ void MyGraphView::addGarage(Garage *g){
     scene->update();
 }
 
+
+void MyGraphView::setSceneStatusVector(){
+    s->setEnabled(true);
+    btn->setEnabled(false);
+    connect(this->s, SIGNAL(valueChanged(int)), this, SLOT(updateSceneStatus(int)));
+    for (Office *f: offices){
+        connect(f, &Office::createOrder, g, &Garage::getOrder);  //херня начинается вот здесь
+    }
+    for (int i = 0; i < 100; i++){
+
+    }
+}
+
+void MyGraphView::updateSceneStatus(int i){
+    scene->clear();
+    SceneStatus current = sceneStatus.at(i);
+    for(Road& r: current.roads){
+        scene->addItem(&r);
+    }
+    for (EmptyPoint& p : current.points){
+        scene->addItem(&p);
+    }
+    for (Truck& t: current.trucks){
+        scene->addItem(&t);
+    }
+}

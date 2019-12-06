@@ -1,6 +1,8 @@
 #ifndef MYGRAPHVIEW_H
 #define MYGRAPHVIEW_H
 
+#include <QSpinBox>
+#include <QPushButton>
 #include <QGraphicsView>
 #include <QContextMenuEvent>
 #include <QMenu>
@@ -10,13 +12,14 @@
 #include "dialogroad.h"
 #include "office.h"
 #include "garage.h"
+#include "truck.h"
 
 
 class MyGraphView : public QGraphicsView
 {
      Q_OBJECT
 public:
-    MyGraphView();
+    MyGraphView(QSpinBox *s, QPushButton* btn);
     ~MyGraphView();
 
     void addRoad(Road *);
@@ -30,11 +33,25 @@ public:
 private:
     enum Status {free, waitingForRoadEndPoint};
     Status status;
+
+    struct SceneStatus {
+        QVector <EmptyPoint> points;
+        QVector <Road> roads;
+        QVector <Truck> trucks;
+    };
+
     QGraphicsScene *scene;
     QVector <Road*> roads;
-    QVector <QGraphicsItem *> points;
-
+    QVector <QGraphicsItem*> points;
+    QVector <Office*> offices;
+    QVector <Truck*> trucks;
+    QVector <SceneStatus> sceneStatus;
+    Garage *g;
     QPoint lastClickedRightMouseButtonPos;
+    QSpinBox *s;
+    QPushButton* btn;
+
+
 
 public slots:
     void showContextMenu(const QPoint &pos);
@@ -45,6 +62,8 @@ public slots:
     void addRoadSlot();
     void addGarageSlot();
     void mouseDoubleClickEvent(QMouseEvent *event) override;
+    void setSceneStatusVector();
+    void updateSceneStatus(int i);
 };
 
 #endif // MYGRAPHVIEW_H

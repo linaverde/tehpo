@@ -1,8 +1,16 @@
 #include "office.h"
+#include "garage.h"
 
+Office::Office(){
+
+}
 Office::Office(QPoint pos)
 {
     this->pos = pos;
+    newOrder =  (qrand() % ((25 + 1) - 0) + 0);
+    orderTime = (qrand() % ((100 + 1) - 0) + 0);
+    //Garage* g;
+    //connect (this, SIGNAL(createOrder()), g, SLOT(getOrder)));
 }
 
 Office::~Office(){
@@ -35,4 +43,12 @@ QVector <Road*> Office::getRoads(){
 
 void Office::addRoad(Road* r){
     roads.push_back(r);
+}
+
+void Office::IncreaceOrder(){
+    orderTime += newOrder;
+    if (orderTime >= 100){
+        orderTime -= 100;
+        emit createOrder();
+    }
 }

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1051</width>
+    <width>850</width>
     <height>600</height>
    </rect>
   </property>
@@ -17,44 +17,35 @@
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>10</x>
       <y>10</y>
       <width>821</width>
-      <height>531</height>
+      <height>491</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout"/>
    </widget>
-   <widget class="Line" name="line">
+   <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>0</y>
-      <width>20</width>
-      <height>581</height>
+      <x>9</x>
+      <y>510</y>
+      <width>821</width>
+      <height>41</height>
      </rect>
     </property>
-    <property name="orientation">
-     <enum>Qt::Vertical</enum>
-    </property>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>9</y>
-      <width>160</width>
-      <height>531</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QListWidget" name="listWidget"/>
+      <widget class="QSpinBox" name="spinDate">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="addPointBtn">
+      <widget class="QPushButton" name="startBtn">
        <property name="text">
-        <string>Добавить вершину</string>
+        <string>Запуск</string>
        </property>
       </widget>
      </item>
@@ -66,7 +57,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1051</width>
+     <width>850</width>
      <height>21</height>
     </rect>
    </property>
