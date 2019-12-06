@@ -9,6 +9,12 @@ Garage::Garage(QPoint pos)
     trucks.push_back(new Truck(this, 40, 150));
 }
 
+Garage::Garage(const Garage& g){
+    this->pos = g.pos;
+    this->roads = g.roads;
+    this->trucks = g.trucks;
+}
+
 Garage::~Garage(){
 
 }
@@ -44,4 +50,8 @@ void Garage::addRoad(Road* r){
 
 QVector<Truck*> Garage::getTrucks(){
     return trucks;
+}
+
+void Garage::getOrder(){
+
 }

@@ -1,15 +1,15 @@
 #include "emptypoint.h"
 
-EmptyPoint::EmptyPoint(){
+EmptyPoint::EmptyPoint() : QObject(){
 
 }
 
-EmptyPoint::EmptyPoint(QPoint pos)
+EmptyPoint::EmptyPoint(QPoint pos) : QObject()
 {
     this->pos = pos;
 }
 
-EmptyPoint::EmptyPoint(const EmptyPoint& e){
+EmptyPoint::EmptyPoint(const EmptyPoint& e) : QObject(){
     this->pos = e.pos;
     this->roads = e.roads;
 }

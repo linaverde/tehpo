@@ -8,6 +8,7 @@ class Office: public EmptyPoint
     Q_OBJECT
 public:
     Office();
+    Office(const Office& o);
     explicit Office(QPoint pos);
     ~Office();
 

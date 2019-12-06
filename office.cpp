@@ -13,6 +13,13 @@ Office::Office(QPoint pos)
     //connect (this, SIGNAL(createOrder()), g, SLOT(getOrder)));
 }
 
+Office::Office(const Office& o){
+    this->pos = o.pos;
+    this->newOrder = o.newOrder;
+    this->orderTime = o.orderTime;
+    this->roads = o.roads;
+}
+
 Office::~Office(){
 
 }

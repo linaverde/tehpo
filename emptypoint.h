@@ -9,7 +9,7 @@
 
 class Road;
 
-class EmptyPoint: public QGraphicsItem
+class EmptyPoint: public QObject,  public QGraphicsItem
 {
     Q_OBJECT
 public:

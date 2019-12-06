@@ -12,6 +12,7 @@ class Garage: public EmptyPoint
     Q_OBJECT
 public:
     Garage(QPoint pos);
+    Garage(const Garage& g);
     ~Garage();
     QRectF boundingRect() const override;
 

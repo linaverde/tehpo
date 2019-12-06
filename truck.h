@@ -10,7 +10,7 @@
 
 class Garage;
 
-class Truck : public QGraphicsItem
+class Truck : public QGraphicsItem, public QObject
 {
 
 private:
