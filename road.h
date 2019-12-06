@@ -11,6 +11,7 @@ class Road : public QGraphicsItem
 {
 public:
     Road();
+    Road(const Road& r);
     explicit Road(EmptyPoint* start, EmptyPoint* end, QPoint startP, QPoint endP,  int km, int price);
     ~Road();
 

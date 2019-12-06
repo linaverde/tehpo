@@ -14,6 +14,7 @@ class EmptyPoint: public QGraphicsItem
     Q_OBJECT
 public:
     EmptyPoint();
+    EmptyPoint(const EmptyPoint& e);
     explicit EmptyPoint(QPoint pos);
     ~EmptyPoint();
 

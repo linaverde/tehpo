@@ -3,6 +3,14 @@
 Truck::Truck(){
 
 }
+Truck::Truck (const Truck& t){
+    this->s = t.s;
+    this->pos = t.pos;
+    this->capacity = t.capacity;
+    this->homeGarage = t.homeGarage;
+    this->currentRoad = t.currentRoad;
+    this->speedPerDay = t.speedPerDay;
+}
 
 Truck::Truck(Garage* garagePosition, unsigned int speedPerDay, unsigned int capacity)
 {

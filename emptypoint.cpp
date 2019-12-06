@@ -9,6 +9,11 @@ EmptyPoint::EmptyPoint(QPoint pos)
     this->pos = pos;
 }
 
+EmptyPoint::EmptyPoint(const EmptyPoint& e){
+    this->pos = e.pos;
+    this->roads = e.roads;
+}
+
 EmptyPoint::~EmptyPoint(){
 
 }

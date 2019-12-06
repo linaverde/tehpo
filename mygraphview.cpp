@@ -179,7 +179,7 @@ void MyGraphView::setSceneStatusVector(){
     btn->setEnabled(false);
     connect(this->s, SIGNAL(valueChanged(int)), this, SLOT(updateSceneStatus(int)));
     for (Office *f: offices){
-        connect(f, &Office::createOrder, g, &Garage::getOrder);  //херня начинается вот здесь
+        //connect(f, &Office::createOrder, g, &Garage::getOrder);  //херня начинается вот здесь
     }
     for (int i = 0; i < 100; i++){
 

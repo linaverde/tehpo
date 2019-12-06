@@ -25,6 +25,7 @@ private:
 
 public:
     Truck ();
+    Truck (const Truck& t);
     explicit Truck(Garage* garagePosition, unsigned int speedPerDay, unsigned int capacity);
 
     void setPosition(QPoint pos);
