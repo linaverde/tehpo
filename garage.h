@@ -17,8 +17,8 @@ public:
     QRectF boundingRect() const override;
 
     void paint(QPainter * painter,
-                   const QStyleOptionGraphicsItem * option,
-                   QWidget * widget) override;
+               const QStyleOptionGraphicsItem * option,
+               QWidget * widget) override;
 
     QPoint getPos() override;
     QVector <Road*> getRoads() override;
@@ -32,7 +32,7 @@ private:
     QVector <Truck*> trucks;
 
 public slots:
-    void getOrder();
+    void getOrder(Office* office, int nForest);
 
 };
 

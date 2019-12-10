@@ -17,7 +17,7 @@
 
 class MyGraphView : public QGraphicsView
 {
-     Q_OBJECT
+    Q_OBJECT
 public:
     MyGraphView(QSpinBox *s, QPushButton* btn);
     ~MyGraphView();

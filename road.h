@@ -3,6 +3,7 @@
 
 #include <QGraphicsItem>
 #include <QGraphicsView>
+#include <QPair>
 #include "emptypoint.h"
 
 class EmptyPoint;
@@ -18,22 +19,24 @@ public:
     QRectF boundingRect() const override;
 
     void paint(QPainter * painter,
-                   const QStyleOptionGraphicsItem * option,
-                   QWidget * widget) override;
+               const QStyleOptionGraphicsItem * option,
+               QWidget * widget) override;
 
-    EmptyPoint* getStartPoint();
-    EmptyPoint* getEndPoint();
+    QPair<EmptyPoint*, EmptyPoint*> getPoints();
+
+    int getPrice();
+    int getKm();
 
 private:
-    EmptyPoint* start, *end;
+    QPair<EmptyPoint*, EmptyPoint*> points;
     QPoint s, e;
     int price;
     int km;
 
 
 protected:
-  bool eventFilter(QObject *, QEvent *);
-  void updateTip();
+    bool eventFilter(QObject *, QEvent *);
+    void updateTip();
 };
 
 #endif // ROAD_H

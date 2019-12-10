@@ -12,12 +12,14 @@ public:
     QRectF boundingRect() const override;
 
     void paint(QPainter * painter,
-                   const QStyleOptionGraphicsItem * option,
-                   QWidget * widget) override;
+               const QStyleOptionGraphicsItem * option,
+               QWidget * widget) override;
 
     QPoint getPos() override;
     QVector <Road*> getRoads() override;
     void addRoad(Road* r) override;
+    int getCurrentCount();
+    int getPrice();
 
 private:
     QPoint pos;

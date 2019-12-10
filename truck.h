@@ -22,6 +22,8 @@ private:
     Road* currentRoad;
     EmptyPoint* currentPoint;
     Garage* homeGarage;
+    QList <EmptyPoint*>* currentWay;
+    Office *currDestinationOffice;
 
 public:
     Truck ();
@@ -36,8 +38,12 @@ public:
     QRectF boundingRect() const override;
 
     void paint(QPainter * painter,
-                   const QStyleOptionGraphicsItem * option,
-                   QWidget * widget) override;
+               const QStyleOptionGraphicsItem * option,
+               QWidget * widget) override;
+
+    QList <EmptyPoint*>* createWayToDelyana(unsigned int nForest);
+
+    void IncreaceStatment();
 
 };
 

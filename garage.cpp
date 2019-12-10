@@ -23,7 +23,7 @@ Garage::~Garage(){
 void Garage::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 
     QPixmap pixmap;
-    if (pixmap.load("D:/qt/projects/tehrazpo/garage.jfif"))
+    if (pixmap.load(":images/garage.jfif"))
     {
         QRect r (0, 0, 50, 30);
         painter->drawPixmap(r, pixmap);
@@ -52,6 +52,7 @@ QVector<Truck*> Garage::getTrucks(){
     return trucks;
 }
 
-void Garage::getOrder(){
-
+void Garage::getOrder(Office *office, int nForest){
+    //выбираем грузовик из свободных
+    //передаем заказ ему
 }

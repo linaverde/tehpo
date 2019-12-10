@@ -7,6 +7,9 @@
 #include <QMenu>
 #include "road.h"
 
+#define MAX_ORDER 150
+#define MIN_ORDER 25
+
 class Road;
 
 class EmptyPoint: public QObject,  public QGraphicsItem
@@ -21,8 +24,8 @@ public:
     QRectF boundingRect() const;
 
     void paint(QPainter * painter,
-                   const QStyleOptionGraphicsItem * option,
-                   QWidget * widget);
+               const QStyleOptionGraphicsItem * option,
+               QWidget * widget);
 
     virtual QPoint getPos();
     virtual QVector <Road*> getRoads();

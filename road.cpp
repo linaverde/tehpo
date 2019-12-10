@@ -3,8 +3,8 @@
 
 Road::Road(EmptyPoint* start, EmptyPoint* end, QPoint startP, QPoint endP, int km, int price)
 {
-    this->start = start;
-    this->end = end;
+    points.first = start;
+    points.second = end;
     this->s = startP;
     this->e = endP;
     this->km = km;
@@ -13,8 +13,8 @@ Road::Road(EmptyPoint* start, EmptyPoint* end, QPoint startP, QPoint endP, int k
 }
 
 Road::Road(const Road& r){
-    this->start = r.start;
-    this->end = r.end;
+    this->points.first = r.points.first;
+    this->points.second = r.points.second;
     this->s = r.s;
     this->e = r.e;
     this->km = r.km;
@@ -43,10 +43,14 @@ void Road::updateTip(){
     this->setToolTip(QString::number(km) + " километров<br>Цена проезда: " + QString::number(price) + "руб");
 }
 
-EmptyPoint* Road::getStartPoint(){
-    return start;
+QPair<EmptyPoint*, EmptyPoint*> Road::getPoints(){
+    return points;
 }
 
-EmptyPoint* Road::getEndPoint(){
-    return end;
+int Road::getPrice(){
+    return price;
+}
+
+int Road::getKm(){
+    return km;
 }

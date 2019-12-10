@@ -19,7 +19,7 @@ Delyana::~Delyana(){
 void Delyana::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 
     QPixmap pixmap;
-    if (pixmap.load("D:/qt/projects/tehrazpo/tree.jpg"))
+    if (pixmap.load(":images/tree.jpg"))
     {
         QRect r (0, 0, 20, 30);
         painter->drawPixmap(r, pixmap);
@@ -44,4 +44,11 @@ void Delyana::addRoad(Road* r){
     roads.push_back(r);
 }
 
+int Delyana::getCurrentCount(){
+    return currentCount;
+}
+
+int Delyana::getPrice(){
+    return price;
+}
 

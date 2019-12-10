@@ -27,7 +27,7 @@ Office::~Office(){
 void Office::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
 
     QPixmap pixmap;
-    if (pixmap.load("D:/qt/projects/tehrazpo/office.jpg"))
+    if (pixmap.load(":images/office.jpg"))
     {
         QRect r (0, 0, 30, 30);
         painter->drawPixmap(r, pixmap);
@@ -56,6 +56,6 @@ void Office::IncreaceOrder(){
     orderTime += newOrder;
     if (orderTime >= 100){
         orderTime -= 100;
-        emit createOrder();
+        emit createOrder(this, (qrand() % ((MAX_ORDER + 1) - MIN_ORDER) + MIN_ORDER));
     }
 }
