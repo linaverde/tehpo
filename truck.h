@@ -16,14 +16,17 @@ class Truck : public QGraphicsItem, public QObject
 private:
     enum status {rest, out};
     status s;
-    unsigned int speedPerDay;
+    unsigned int speed;
     unsigned int capacity;
     QPoint pos;
-    Road* currentRoad;
-    EmptyPoint* currentPoint;
     Garage* homeGarage;
-    QList <EmptyPoint*>* currentWay;
+    QList <QPoint> currentWay;
+    Delyana *currDestinationDelyana;
     Office *currDestinationOffice;
+
+    QList <EmptyPoint*> createWayToDelyana(unsigned int nForest);
+
+    QList <QPoint> calculateCurrWayPoints(QList <EmptyPoint*> way);
 
 public:
     Truck ();
@@ -41,9 +44,13 @@ public:
                const QStyleOptionGraphicsItem * option,
                QWidget * widget) override;
 
-    QList <EmptyPoint*>* createWayToDelyana(unsigned int nForest);
+    void getOrder(Office *office, unsigned int nForest);
 
-    void IncreaceStatment();
+    Truck increaceStatment();
+
+    unsigned getCapacity();
+
+    status getTruckStatus();
 
 };
 

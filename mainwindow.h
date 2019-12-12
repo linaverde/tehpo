@@ -20,7 +20,7 @@ private:
     Ui::MainWindow *ui;
     MyGraphView *view;
 
-public slots:
+public Q_SLOTS:
     void update_item_array();
 
 };

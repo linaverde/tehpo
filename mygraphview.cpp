@@ -26,7 +26,7 @@ MyGraphView::~MyGraphView(){
 }
 
 bool hasRoad(EmptyPoint* p, QVector <Road*> roads){
-    foreach (Road* r, roads) {
+    for (Road* r: roads) {
         if(r->getPoints().first == p || r->getPoints().second == p){
             return true;
         }
@@ -180,6 +180,7 @@ void MyGraphView::addGarage(Garage *g){
 
 
 void MyGraphView::setSceneStatusVector(){
+    scene->addItem(g->getTrucks().at(0));
     if (this->g == nullptr){
         QErrorMessage *e = new QErrorMessage(this);
         e->setWindowTitle("Ошибка запуска приложения");
@@ -189,25 +190,42 @@ void MyGraphView::setSceneStatusVector(){
         btn->setEnabled(false);
         connect(this->s, SIGNAL(valueChanged(int)), this, SLOT(updateSceneStatus(int)));
         for (Office *f: offices){
-            connect(f, SIGNAL(createOrder(Office*, int)), g, SLOT(getOrder(Office*, int)));
+            connect(f, SIGNAL(createOrder(const Office&, unsigned int)), g, SLOT(getOrder(const Office&, unsigned int)));
         }
-        //sceneStatus.push_back()
-        //for (int i = 1; i < 100; i++){
-
-        //}
+        for (int i = 0; i < 100; i++){
+            SceneStatus s;
+            for(Office *o: offices){
+                s.points.push_back(o->increaceStatement());
+            }
+            for(Truck *t: g->getTrucks()){
+                s.trucks.push_back(t->increaceStatment());
+            }
+            sceneStatus.push_back(s);
+        }
     }
 }
 
 void MyGraphView::updateSceneStatus(int i){
-    scene->clear();
+    for(QGraphicsItem *item: scene->items()){
+        if (dynamic_cast<Truck*>(item) || dynamic_cast<Office*>(item)){
+            scene->removeItem(item);
+            scene->update();
+        }
+    }
+
     SceneStatus current = sceneStatus.at(i);
-    for(Road& r: current.roads){
-        scene->addItem(&r);
+    for (EmptyPoint p : current.points){
+        EmptyPoint *point = &p;
+        scene->addItem(point);
+        scene->update();
     }
-    for (EmptyPoint& p : current.points){
-        scene->addItem(&p);
+    for (Truck t: current.trucks){
+        if (t.getTruckStatus() == 1){
+            Truck* tr = &t;
+            scene->addItem(tr);
+             scene->update();
+        }
     }
-    for (Truck& t: current.trucks){
-        scene->addItem(&t);
-    }
+
+    scene->update();
 }

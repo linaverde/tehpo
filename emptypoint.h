@@ -15,6 +15,7 @@ class Road;
 class EmptyPoint: public QObject,  public QGraphicsItem
 {
     Q_OBJECT
+    Q_INTERFACES(QGraphicsItem)
 public:
     EmptyPoint();
     EmptyPoint(const EmptyPoint& e);
@@ -34,8 +35,6 @@ public:
 private:
     QPoint pos;
     QVector <Road*> roads;
-
-public slots:
 
 };
 

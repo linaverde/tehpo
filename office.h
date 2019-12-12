@@ -22,7 +22,7 @@ public:
     QVector <Road*> getRoads() override;
     void addRoad(Road* r) override;
 
-    void IncreaceOrder();
+    Office increaceStatement();
 
 private:
     QPoint pos;
@@ -30,9 +30,11 @@ private:
     int newOrder;
     int orderTime;
 
-signals:
-    void createOrder(Office* office, int nForest);
+Q_SIGNALS:
+    void createOrder(const Office&, unsigned int);
 
 };
+
+Q_DECLARE_METATYPE(Office);
 
 #endif // OFFICE_H

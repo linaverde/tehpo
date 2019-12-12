@@ -31,8 +31,8 @@ private:
     QVector <Road*> roads;
     QVector <Truck*> trucks;
 
-public slots:
-    void getOrder(Office* office, int nForest);
+public Q_SLOTS:
+    void getOrder(const Office& office, unsigned int nForest);
 
 };
 

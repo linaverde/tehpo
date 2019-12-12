@@ -36,7 +36,6 @@ private:
 
     struct SceneStatus {
         QVector <EmptyPoint> points;
-        QVector <Road> roads;
         QVector <Truck> trucks;
     };
 
@@ -53,7 +52,7 @@ private:
 
 
 
-public slots:
+public Q_SLOTS:
     void showContextMenu(const QPoint &pos);
     void addPointSlot();
     void addOfficeSlot();

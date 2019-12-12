@@ -9,7 +9,7 @@ Garage::Garage(QPoint pos)
     trucks.push_back(new Truck(this, 40, 150));
 }
 
-Garage::Garage(const Garage& g){
+Garage::Garage(const Garage& g): EmptyPoint(g){
     this->pos = g.pos;
     this->roads = g.roads;
     this->trucks = g.trucks;
@@ -52,7 +52,15 @@ QVector<Truck*> Garage::getTrucks(){
     return trucks;
 }
 
-void Garage::getOrder(Office *office, int nForest){
-    //выбираем грузовик из свободных
-    //передаем заказ ему
+void Garage::getOrder(const Office& office, unsigned int nForest){
+    Truck* bestTruck = trucks.at(0);
+    for (Truck* t: this->trucks) {
+        if (t->getCapacity() <= nForest && t->getCapacity() < bestTruck->getCapacity() && t->getTruckStatus() == 0){
+            bestTruck = t;
+        }
+    }
+    if (bestTruck->getCapacity() <= nForest){
+        Office o = office;
+        bestTruck->getOrder(&o, nForest);
+    }
 }

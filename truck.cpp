@@ -5,19 +5,19 @@
 Truck::Truck(){
 
 }
+
 Truck::Truck (const Truck& t){
     this->s = t.s;
     this->pos = t.pos;
     this->capacity = t.capacity;
     this->homeGarage = t.homeGarage;
-    this->currentRoad = t.currentRoad;
-    this->speedPerDay = t.speedPerDay;
+    this->speed = t.speed;
 }
 
 Truck::Truck(Garage* garagePosition, unsigned int speedPerDay, unsigned int capacity)
 {
     this->homeGarage = garagePosition;
-    this->speedPerDay = speedPerDay;
+    this->speed = speedPerDay;
     this->capacity = capacity;
 }
 
@@ -38,15 +38,111 @@ void Truck::paint(QPainter * painter,
 }
 
 void Truck::setPosition(QPoint pos){
-    this->setPos(pos);
+    this->pos = pos;
+    this->setPos(this->pos);
 }
 
-QList <EmptyPoint*>* Truck::createWayToDelyana(unsigned int nForest){
-    EmptyPoint* currentPoint = this->currentPoint;
+Truck::status Truck::getTruckStatus(){
+    return s;
+}
+
+Truck Truck::increaceStatment(){
+    if (!currentWay.isEmpty()){
+        this->setPosition(currentWay.at(0));
+        currentWay.removeAt(0);
+    } else {
+        this->s = rest;
+    }
+    return *this;
+}
+
+unsigned int Truck::getCapacity(){
+    return capacity;
+}
+
+void Truck::getOrder(Office *office, unsigned int nForest){
+    QList<EmptyPoint*> way = createWayToDelyana(nForest);
+    if (!way.isEmpty()){
+        currDestinationOffice = office;
+        currDestinationDelyana = dynamic_cast<Delyana*>(way.last());
+        currentWay = calculateCurrWayPoints(way);
+        s = out;
+    }
+}
+
+QPoint calculatePoint (QPoint s, QPoint e, float percent){
+    //рассчет положение грузовика мать его за ногу по формулам из геометрии за 7-8-9 класс я бы хотела их забыть нафиг
+    //Тут нужно немного вспомнить начальную геометрию
+    //Если взять линию из первой точки до последней за гипотенузу,
+    //сможем "дорисовать" из линии прямоугольный треугольник, получим его "ширину" и "высоту"
+    int triangleWidth = e.x() - s.x();
+    int triangleHeight = e.y() - s.y();
+    //Очевидно (из теоремы Пифагора), что если оба катета умножить на одно число,
+    //то и гипотенуза увеличится в такое же количесвто раз
+    //Находим катеты для текущей длины линии
+    float currentWidth = triangleWidth * percent;
+    float currentHeight = triangleHeight * percent;
+    //Ну и тут уже получаем текущие координаты конца линии.
+    QPoint resultPoint(s.x() + currentWidth, s.y() + currentHeight);
+    return resultPoint;
+}
+
+QList <QPoint> Truck::calculateCurrWayPoints(QList<EmptyPoint*> way){
+    int i = 0;
+    QList <QPoint> l;
+    bool cycle = true;
+    float roadPercent = 0;
+    float percentForIteration;
+
+    QPoint s = way.at(0)->getPos(); //старт отсчета
+    QPoint e = way.at(1)->getPos(); //конец отсчета
+
+    Road *road;
+    for (Road *r:  way.at(0)->getRoads()){
+        if (r->getPoints().first == way.at(1) || r->getPoints().second == way.at(1)){
+            road = r;
+            break;
+        }
+    }
+
+    percentForIteration = (float) this->speed / (float) road->getKm();
+
+    while (cycle){
+        roadPercent += percentForIteration;
+        if (roadPercent < 1) {
+            l.push_back(calculatePoint(s, e, roadPercent));
+        } else {
+            if ((i + 1) < way.length()) {
+                i++;
+                roadPercent = 0;
+                s = way.at(i-1)->getPos();
+                e = way.at(i)->getPos();
+                for (Road *r:  way.at(i-1)->getRoads()){
+                    if (r->getPoints().first == way.at(i) || r->getPoints().second == way.at(i)){
+                        road = r;
+                        break;
+                    }
+                }
+                percentForIteration = (float) this->speed / (float) road->getKm();
+                l.push_back(calculatePoint(s, e, roadPercent));
+            } else {
+                roadPercent = 1;
+                l.push_back(calculatePoint(s, e, roadPercent));
+                cycle = false;
+            }
+        }
+    }
+
+    return l;
+}
+
+QList <EmptyPoint*> Truck::createWayToDelyana(unsigned int nForest){
+
+    EmptyPoint* currentPoint = homeGarage;
     QVector<std::tuple<QList<EmptyPoint*>, int, bool>> possibleWay;
 
     //добавление первых вариантов вне цикла
-    foreach (Road *r, currentPoint->getRoads()) { //для каждой дороги в текущей точке
+    for(Road *r: currentPoint->getRoads()) { //для каждой дороги в текущей точке
 
         QList<EmptyPoint*> l; //создаем список
         l.push_back(currentPoint); //помещаем в список текущую вершину
@@ -72,12 +168,12 @@ QList <EmptyPoint*>* Truck::createWayToDelyana(unsigned int nForest){
 
     while (!hasCalculatedWay){ //в цикле продолжаем построение маршрутов
         auto currentState = possibleWay; //создаем копию вектора во избежание добавления во время пробега по нему
-        foreach (auto t, currentState){ //выбираем каждый из существующих
+        for (auto t: currentState){ //выбираем каждый из существующих
 
             if (std::get<2>(t) == false){ //если маршрут проложен не до конца
 
                 currentPoint = std::get<0>(t).last(); //берем вершину списка за текущее положение
-                foreach(Road* r, currentPoint->getRoads()){
+                for(Road* r: currentPoint->getRoads()){
                     EmptyPoint* nextPoint;
                     r->getPoints().first == currentPoint ? nextPoint = r->getPoints().second : nextPoint = r->getPoints().first; //выбираем вторую вершину
 
@@ -86,12 +182,13 @@ QList <EmptyPoint*>* Truck::createWayToDelyana(unsigned int nForest){
                         auto newWay = t; //копируем возможный путь
                         std::get<0>(newWay).push_back(nextPoint); //добавляем в него новую вершину
                         std::get<1>(newWay) = std::get<1>(newWay) + r->getPrice(); //прибавляем к цене стоимость проезда
+                        std::get<2>(newWay) = false;
 
                         if (dynamic_cast<Delyana*>(nextPoint)){ //новая вершина - деляна
 
                             Delyana* nextD = dynamic_cast<Delyana*>(nextPoint); //кастуем вершину к деляне
 
-                            if (nextD->getCurrentCount() <= nForest){ //проверяем, что в деляне хватает дерева
+                            if (nextD->getCurrentCount() >= nForest){ //проверяем, что в деляне хватает дерева
 
                                 std::tuple<QList<EmptyPoint*>, int, bool> crossroad = newWay; //копируем проложенный путь
                                 std::get<1>(newWay) = std::get<1>(newWay) + nForest*nextD->getPrice(); // прибавляем к стоимости пути закупку леса в деляне
@@ -103,9 +200,9 @@ QList <EmptyPoint*>* Truck::createWayToDelyana(unsigned int nForest){
 
                         possibleWay.push_back(newWay); //добавляем в вектор новый путь с +1 вершиной
                     }
-                    possibleWay.removeOne(t); //удаляем путь, так как добавили все возможные его продолжения
+
                 }
-                //возможно вторая ветка не нужна
+                possibleWay.removeOne(t); //удаляем путь, так как добавили все возможные его продолжения
             } else { //если выбранный маршрут в векторе проложен до конца
 
                 if(!dynamic_cast<Delyana*>(std::get<0>(t).last())){ //если последняя вершина в пути не кастуется в деляну
@@ -114,7 +211,7 @@ QList <EmptyPoint*>* Truck::createWayToDelyana(unsigned int nForest){
             }
 
             //условие для выхода из цикла
-            foreach(auto way, possibleWay){
+            for(auto way: possibleWay){
                 //проверяем, что еще существуют пути, не проложенные до конца
                 hasCalculatedWay = true;
                 if (std::get<2>(way) == false){
@@ -126,19 +223,23 @@ QList <EmptyPoint*>* Truck::createWayToDelyana(unsigned int nForest){
         }
     }
 
+    QList <EmptyPoint*> resultWay;
+
     if (possibleWay.isEmpty()){
-        return nullptr;
+        return resultWay;
     }
 
     //выбор минимального по стоимости пути из возможных и возврат его
     auto min = possibleWay.at(0);
-    foreach(auto t, possibleWay){
+    for(auto t: possibleWay){
         if (std::get<1>(t) < std::get<1>(min)){
             min = t;
         }
     }
 
-    return &std::get<0>(min);
+    resultWay = std::get<0>(min);
+
+    return resultWay;
 }
 
 

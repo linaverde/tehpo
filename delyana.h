@@ -20,6 +20,7 @@ public:
     void addRoad(Road* r) override;
     int getCurrentCount();
     int getPrice();
+    void increaceStatment();
 
 private:
     QPoint pos;

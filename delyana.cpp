@@ -52,3 +52,7 @@ int Delyana::getPrice(){
     return price;
 }
 
+void Delyana::increaceStatment(){
+    this->currentCount += this->cpd;
+}
+

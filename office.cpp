@@ -7,13 +7,13 @@ Office::Office(){
 Office::Office(QPoint pos)
 {
     this->pos = pos;
-    newOrder =  (qrand() % ((25 + 1) - 0) + 0);
-    orderTime = (qrand() % ((100 + 1) - 0) + 0);
+    newOrder =  (qrand() % ((25 + 1) - 1) + 1);
+    orderTime = (qrand() % ((100 + 1) - 1) + 1);
     //Garage* g;
     //connect (this, SIGNAL(createOrder()), g, SLOT(getOrder)));
 }
 
-Office::Office(const Office& o){
+Office::Office(const Office& o) : EmptyPoint (o){
     this->pos = o.pos;
     this->newOrder = o.newOrder;
     this->orderTime = o.orderTime;
@@ -52,10 +52,14 @@ void Office::addRoad(Road* r){
     roads.push_back(r);
 }
 
-void Office::IncreaceOrder(){
-    orderTime += newOrder;
-    if (orderTime >= 100){
-        orderTime -= 100;
-        emit createOrder(this, (qrand() % ((MAX_ORDER + 1) - MIN_ORDER) + MIN_ORDER));
+Office Office::increaceStatement(){
+    this -> orderTime = this->orderTime + this->newOrder;
+    if (this->orderTime >= 100){
+        this->orderTime -= 100;
+        unsigned int order = (qrand() % ((MAX_ORDER + 1) - MIN_ORDER) + MIN_ORDER);
+        Office o = *this;
+        createOrder(o, order);
     }
+    return *this;
 }
+
