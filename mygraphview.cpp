@@ -2,11 +2,25 @@
 #include <iostream>
 #include <QErrorMessage>
 
+MyGraphView::~MyGraphView(){
+
+}
+
+bool hasRoad(EmptyPoint* p, QVector <Road*> roads){
+    for (Road* r: roads) {
+        if(r->getPoints().first == p || r->getPoints().second == p){
+            return true;
+        }
+    }
+    return false;
+}
+
 MyGraphView::MyGraphView(QSpinBox *s, QPushButton* btn)
 {
     this->status = free;
     this->g = nullptr;
-    this->s = s;
+    this->spin = s;
+    spin->setMaximum(MAX_DAY);
     this->btn = btn;
     /* Немного поднастроим отображение виджета и его содержимого */
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Отключим скроллбар по горизонтали
@@ -19,19 +33,6 @@ MyGraphView::MyGraphView(QSpinBox *s, QPushButton* btn)
     scene = new QGraphicsScene();   // Инициализируем сцену для отрисовки
     this->setScene(scene);          // Устанавливаем сцену в виджет
 
-}
-
-MyGraphView::~MyGraphView(){
-
-}
-
-bool hasRoad(EmptyPoint* p, QVector <Road*> roads){
-    for (Road* r: roads) {
-        if(r->getPoints().first == p || r->getPoints().second == p){
-            return true;
-        }
-    }
-    return false;
 }
 
 void MyGraphView::addRoad(Road *r){
@@ -180,50 +181,38 @@ void MyGraphView::addGarage(Garage *g){
 
 
 void MyGraphView::setSceneStatusVector(){
-    scene->addItem(g->getTrucks().at(0));
     if (this->g == nullptr){
         QErrorMessage *e = new QErrorMessage(this);
         e->setWindowTitle("Ошибка запуска приложения");
         e->showMessage("На карте нет гаража!");
     } else {
-        s->setEnabled(true);
+        spin->setEnabled(true);
         btn->setEnabled(false);
-        connect(this->s, SIGNAL(valueChanged(int)), this, SLOT(updateSceneStatus(int)));
+        connect(this->spin, SIGNAL(valueChanged(int)), this, SLOT(updateSceneStatus(int)));
         for (Office *f: offices){
             connect(f, SIGNAL(createOrder(const Office&, unsigned int)), g, SLOT(getOrder(const Office&, unsigned int)));
         }
-        for (int i = 0; i < 100; i++){
-            SceneStatus s;
-            for(Office *o: offices){
-                s.points.push_back(o->increaceStatement());
-            }
-            for(Truck *t: g->getTrucks()){
-                s.trucks.push_back(t->increaceStatment());
-            }
-            sceneStatus.push_back(s);
+
+        for (Truck *t: g->getTrucks()){
+            scene->addItem(t);
+            t->setVisible(false);
         }
     }
 }
 
 void MyGraphView::updateSceneStatus(int i){
-    for(QGraphicsItem *item: scene->items()){
-        if (dynamic_cast<Truck*>(item) || dynamic_cast<Office*>(item)){
-            scene->removeItem(item);
-            scene->update();
-        }
-    }
+    spin->setMinimum(i);
 
-    SceneStatus current = sceneStatus.at(i);
-    for (EmptyPoint p : current.points){
-        EmptyPoint *point = &p;
-        scene->addItem(point);
-        scene->update();
-    }
-    for (Truck t: current.trucks){
-        if (t.getTruckStatus() == 1){
-            Truck* tr = &t;
-            scene->addItem(tr);
-             scene->update();
+    for (QGraphicsItem *item: scene->items()){
+        if (dynamic_cast<Office*>(item)){
+            Office *o = dynamic_cast<Office*>(item);
+            o->increaceStatement();
+        } else if (dynamic_cast<Truck*>(item)){
+            Truck *t = dynamic_cast<Truck*>(item);
+            t->increaceStatment(scene);
+        } else if (dynamic_cast<Delyana*>(item)){
+            Delyana *d = dynamic_cast<Delyana*>(item);
+            d->increaceStatment();
         }
     }
 

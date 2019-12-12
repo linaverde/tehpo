@@ -54,5 +54,13 @@ int Delyana::getPrice(){
 
 void Delyana::increaceStatment(){
     this->currentCount += this->cpd;
+    this->setToolTip(QString::number(currentCount) + " ед. леса<br>Цена за ед.: "
+                     + QString::number(price) + "руб<br>Выработка " + QString::number(cpd) + "ед. в день");
+}
+
+void Delyana::contOrder(unsigned int nForest){
+    this->currentCount -= nForest;
+    this->setToolTip(QString::number(currentCount) + " ед. леса<br>Цена за ед.: "
+                     + QString::number(price) + "руб<br>Выработка " + QString::number(cpd) + "ед. в день");
 }
 

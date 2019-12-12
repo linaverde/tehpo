@@ -14,12 +14,13 @@
 #include "garage.h"
 #include "truck.h"
 
+#define MAX_DAY 500
 
 class MyGraphView : public QGraphicsView
 {
     Q_OBJECT
 public:
-    MyGraphView(QSpinBox *s, QPushButton* btn);
+    MyGraphView(QSpinBox *spin, QPushButton* btn);
     ~MyGraphView();
 
     void addRoad(Road *);
@@ -34,20 +35,14 @@ private:
     enum Status {free, waitingForRoadEndPoint};
     Status status;
 
-    struct SceneStatus {
-        QVector <EmptyPoint> points;
-        QVector <Truck> trucks;
-    };
-
     QGraphicsScene *scene;
     QVector <Road*> roads;
     QVector <QGraphicsItem*> points;
     QVector <Office*> offices;
     QVector <Truck*> trucks;
-    QVector <SceneStatus> sceneStatus;
     Garage *g;
     QPoint lastClickedRightMouseButtonPos;
-    QSpinBox *s;
+    QSpinBox *spin;
     QPushButton* btn;
 
 

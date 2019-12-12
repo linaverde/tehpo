@@ -21,6 +21,7 @@ public:
     int getCurrentCount();
     int getPrice();
     void increaceStatment();
+    void contOrder(unsigned int nForest);
 
 private:
     QPoint pos;

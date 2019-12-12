@@ -1,6 +1,7 @@
 #ifndef TRUCK_H
 #define TRUCK_H
 
+#include <QGraphicsScene>
 #include "emptypoint.h"
 #include "delyana.h"
 #include "dialogdelyana.h"
@@ -20,11 +21,16 @@ private:
     unsigned int capacity;
     QPoint pos;
     Garage* homeGarage;
+
+    int currentOrderSum;
+    unsigned int nForest;
     QList <QPoint> currentWay;
     Delyana *currDestinationDelyana;
     Office *currDestinationOffice;
 
     QList <EmptyPoint*> createWayToDelyana(unsigned int nForest);
+
+    QList <EmptyPoint*> createWayToOffice(EmptyPoint* lastP);
 
     QList <QPoint> calculateCurrWayPoints(QList <EmptyPoint*> way);
 
@@ -46,7 +52,7 @@ public:
 
     void getOrder(Office *office, unsigned int nForest);
 
-    Truck increaceStatment();
+    Truck increaceStatment(QGraphicsScene *scene);
 
     unsigned getCapacity();
 

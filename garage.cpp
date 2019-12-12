@@ -3,10 +3,7 @@
 Garage::Garage(QPoint pos)
 {
     this->pos = pos;
-    trucks.push_back(new Truck(this, 100, 50));
-    trucks.push_back(new Truck(this, 80, 70));
-    trucks.push_back(new Truck(this, 60, 100));
-    trucks.push_back(new Truck(this, 40, 150));
+    trucks.push_back(new Truck(this, 100, 500));
 }
 
 Garage::Garage(const Garage& g): EmptyPoint(g){
@@ -55,11 +52,11 @@ QVector<Truck*> Garage::getTrucks(){
 void Garage::getOrder(const Office& office, unsigned int nForest){
     Truck* bestTruck = trucks.at(0);
     for (Truck* t: this->trucks) {
-        if (t->getCapacity() <= nForest && t->getCapacity() < bestTruck->getCapacity() && t->getTruckStatus() == 0){
+        if (t->getCapacity() >= nForest && t->getCapacity() < bestTruck->getCapacity() && t->getTruckStatus() == 0){
             bestTruck = t;
         }
     }
-    if (bestTruck->getCapacity() <= nForest){
+    if (bestTruck->getCapacity() >= nForest && bestTruck->getTruckStatus() == 0){
         Office o = office;
         bestTruck->getOrder(&o, nForest);
     }
