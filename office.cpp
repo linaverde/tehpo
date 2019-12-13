@@ -31,6 +31,9 @@ void Office::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     {
         QRect r (0, 0, 30, 30);
         painter->drawPixmap(r, pixmap);
+        QPen pen(Qt::black, 2);
+        painter->setPen(pen);
+        painter->drawText(QPoint(0, 0), QString::number(number));
         this->setPos(pos);
     }
 }
@@ -57,9 +60,12 @@ Office Office::increaceStatement(){
     if (this->orderTime >= 100){
         this->orderTime -= 100;
         unsigned int order = (qrand() % ((MAX_ORDER + 1) - MIN_ORDER) + MIN_ORDER);
-        Office o = *this;
-        createOrder(o, order);
+        createOrder(this, order);
     }
     return *this;
+}
+
+void Office::setNumber(unsigned int number){
+    this->number = number;
 }
 

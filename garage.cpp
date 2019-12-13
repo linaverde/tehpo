@@ -24,6 +24,9 @@ void Garage::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     {
         QRect r (0, 0, 50, 30);
         painter->drawPixmap(r, pixmap);
+        QPen pen(Qt::black, 2);
+        painter->setPen(pen);
+        painter->drawText(QPoint(0, 0), QString::number(number));
         this->setPos(pos);
     }
 }
@@ -49,15 +52,20 @@ QVector<Truck*> Garage::getTrucks(){
     return trucks;
 }
 
-void Garage::getOrder(const Office& office, unsigned int nForest){
+void Garage::getOrder(Office* office, unsigned int nForest){
     Truck* bestTruck = trucks.at(0);
+
     for (Truck* t: this->trucks) {
         if (t->getCapacity() >= nForest && t->getCapacity() < bestTruck->getCapacity() && t->getTruckStatus() == 0){
             bestTruck = t;
         }
     }
+
     if (bestTruck->getCapacity() >= nForest && bestTruck->getTruckStatus() == 0){
-        Office o = office;
-        bestTruck->getOrder(&o, nForest);
+        bestTruck->getOrder(office, nForest);
     }
+}
+
+void Garage::setNumber(unsigned int number){
+    this->number = number;
 }

@@ -21,17 +21,19 @@ public:
     QPoint getPos() override;
     QVector <Road*> getRoads() override;
     void addRoad(Road* r) override;
+    void setNumber(unsigned int number) override;
 
     Office increaceStatement();
 
 private:
+    unsigned int number;
     QPoint pos;
     QVector <Road*> roads;
     int newOrder;
     int orderTime;
 
 Q_SIGNALS:
-    void createOrder(const Office&, unsigned int);
+    void createOrder(Office*, unsigned int);
 
 };
 

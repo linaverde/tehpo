@@ -18,12 +18,14 @@ public:
     QPoint getPos() override;
     QVector <Road*> getRoads() override;
     void addRoad(Road* r) override;
+    void setNumber(unsigned int number) override;
     int getCurrentCount();
     int getPrice();
     void increaceStatment();
     void contOrder(unsigned int nForest);
 
 private:
+    unsigned int number;
     QPoint pos;
     QVector <Road*> roads;
     int cpd;

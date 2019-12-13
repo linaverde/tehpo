@@ -10,6 +10,8 @@ Road::Road(EmptyPoint* start, EmptyPoint* end, QPoint startP, QPoint endP, int k
     this->km = km;
     this->price = price;
     //this->setToolTip(QString::number(km) + " километров<br>Цена проезда: " + QString::number(price) + "руб");
+    start->addRoad(this);
+    end->addRoad(this);
 }
 
 Road::Road(const Road& r){

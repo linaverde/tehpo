@@ -23,16 +23,18 @@ public:
     QPoint getPos() override;
     QVector <Road*> getRoads() override;
     void addRoad(Road* r) override;
+    void setNumber(unsigned int number) override;
 
     QVector<Truck*> getTrucks();
 
 private:
+    unsigned int number;
     QPoint pos;
     QVector <Road*> roads;
     QVector <Truck*> trucks;
 
 public Q_SLOTS:
-    void getOrder(const Office& office, unsigned int nForest);
+    void getOrder(Office* office, unsigned int nForest);
 
 };
 

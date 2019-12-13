@@ -23,6 +23,9 @@ void Delyana::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     {
         QRect r (0, 0, 20, 30);
         painter->drawPixmap(r, pixmap);
+        QPen pen(Qt::black, 2);
+        painter->setPen(pen);
+        painter->drawText(QPoint(0, 0), QString::number(number));
         this->setPos(pos);
     }
 }
@@ -62,5 +65,9 @@ void Delyana::contOrder(unsigned int nForest){
     this->currentCount -= nForest;
     this->setToolTip(QString::number(currentCount) + " ед. леса<br>Цена за ед.: "
                      + QString::number(price) + "руб<br>Выработка " + QString::number(cpd) + "ед. в день");
+}
+
+void Delyana::setNumber(unsigned int number){
+    this->number = number;
 }
 

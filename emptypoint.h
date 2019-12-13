@@ -31,8 +31,10 @@ public:
     virtual QPoint getPos();
     virtual QVector <Road*> getRoads();
     virtual void addRoad(Road* r);
+    virtual void setNumber(unsigned int number);
 
 private:
+    unsigned int number;
     QPoint pos;
     QVector <Road*> roads;
 

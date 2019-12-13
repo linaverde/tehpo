@@ -27,6 +27,8 @@ SOURCES += \
     mygraphview.cpp \
     office.cpp \
     road.cpp \
+    roadlengthtabledialog.cpp \
+    roadpricetabledialog.cpp \
     truck.cpp
 
 HEADERS += \
@@ -39,12 +41,16 @@ HEADERS += \
     mygraphview.h \
     office.h \
     road.h \
+    roadlengthtabledialog.h \
+    roadpricetabledialog.h \
     truck.h
 
 FORMS += \
     dialogdelyana.ui \
     dialogroad.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    roadlengthtabledialog.ui \
+    roadpricetabledialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

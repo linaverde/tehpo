@@ -22,10 +22,14 @@ void EmptyPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 
     QRect r(0,0, 10,10);
     painter->setBrush(Qt::black);
-    QPen pen(Qt::white, 2);
-    painter->setPen(pen);
+    QPen pen1(Qt::white, 2);
+    painter->setPen(pen1);
     painter->drawEllipse(r);
+    QPen pen2(Qt::black, 2);
+    painter->setPen(pen2);
+    painter->drawText(QPoint(0, 0), QString::number(number));
     this->setPos(pos);
+
 }
 
 QRectF EmptyPoint::boundingRect() const{
@@ -43,4 +47,8 @@ QVector <Road*> EmptyPoint::getRoads(){
 
 void EmptyPoint::addRoad(Road* r){
     roads.push_back(r);
+}
+
+void EmptyPoint::setNumber(unsigned int number){
+    this->number = number;
 }

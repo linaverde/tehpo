@@ -1,6 +1,8 @@
 #include "mygraphview.h"
 #include <iostream>
 #include <QErrorMessage>
+#include "roadlengthtabledialog.h"
+#include "roadpricetabledialog.h"
 
 MyGraphView::~MyGraphView(){
 
@@ -17,7 +19,6 @@ bool hasRoad(EmptyPoint* p, QVector <Road*> roads){
 
 MyGraphView::MyGraphView(QSpinBox *s, QPushButton* btn)
 {
-    this->status = free;
     this->g = nullptr;
     this->spin = s;
     spin->setMaximum(MAX_DAY);
@@ -58,97 +59,70 @@ void MyGraphView::deletePoint(QPoint pos){
         }
     }
     scene->removeItem(item);
+    if (dynamic_cast<Garage*>(item)){
+        g = nullptr;
+    }
     delete item;
+    scene->update();
+}
+
+void MyGraphView::updateNumbers(){
+    for (int i = 0; i < scene->items().length(); i++){
+        EmptyPoint *e = dynamic_cast<EmptyPoint*>(scene->items().at(i));
+        e->setNumber(i+1);
+    }
     scene->update();
 }
 
 void MyGraphView::showContextMenu(const QPoint &pos){
     lastClickedRightMouseButtonPos = pos;
-    if (status == free){
-        QGraphicsItem *item = scene->itemAt(pos, QTransform());
-        if (item == nullptr || !points.contains(item)){
-            QMenu contextMenu(tr("Context menu"), this);
-            QAction addPoint("Добавить вершину", this);
-            QAction addDelyana("Добавить деляну", this);
-            QAction addOffice("Добавить контору", this);
-            QAction addGarage("Добавить гараж", this);
-            connect(&addPoint, SIGNAL(triggered()), this, SLOT(addPointSlot()));
-            connect(&addOffice, SIGNAL(triggered()), this, SLOT(addOfficeSlot()));
-            connect(&addDelyana, SIGNAL(triggered()), this, SLOT(delyanaDialogSlot()));
-            contextMenu.addAction(&addPoint);
-            contextMenu.addAction(&addOffice);
-            contextMenu.addAction(&addDelyana);
-            if (this->g == nullptr){
-                contextMenu.addAction(&addGarage);
-                connect(&addGarage, SIGNAL(triggered()), this, SLOT(addGarageSlot()));
-            }
-            contextMenu.exec(mapToGlobal(pos));
-        } else if (points.contains(item)){
-            QMenu contextMenu(tr("Context menu"), this);
-            QAction createRoad("Создать дорогу", this);
-            QAction remove("Удалить", this);
-            connect(&remove, SIGNAL(triggered()), this, SLOT(deletePointSlot()));
-            connect(&createRoad, SIGNAL(triggered()), this, SLOT(addRoadSlot()));
-            contextMenu.addAction(&createRoad);
-            contextMenu.addAction(&remove);
-            contextMenu.exec(mapToGlobal(pos));
+    QGraphicsItem *item = scene->itemAt(pos, QTransform());
+    if (item == nullptr || !points.contains(item)){
+        QMenu contextMenu(tr("Context menu"), this);
+        QAction addPoint("Добавить вершину", this);
+        QAction addDelyana("Добавить деляну", this);
+        QAction addOffice("Добавить контору", this);
+        QAction addGarage("Добавить гараж", this);
+        connect(&addPoint, SIGNAL(triggered()), this, SLOT(addPointSlot()));
+        connect(&addOffice, SIGNAL(triggered()), this, SLOT(addOfficeSlot()));
+        connect(&addDelyana, SIGNAL(triggered()), this, SLOT(delyanaDialogSlot()));
+        contextMenu.addAction(&addPoint);
+        contextMenu.addAction(&addOffice);
+        contextMenu.addAction(&addDelyana);
+        if (this->g == nullptr){
+            contextMenu.addAction(&addGarage);
+            connect(&addGarage, SIGNAL(triggered()), this, SLOT(addGarageSlot()));
         }
+        contextMenu.exec(mapToGlobal(pos));
+    } else if (points.contains(item)){
+        QMenu contextMenu(tr("Context menu"), this);
+        QAction remove("Удалить", this);
+        connect(&remove, SIGNAL(triggered()), this, SLOT(deletePointSlot()));
+        contextMenu.addAction(&remove);
+        contextMenu.exec(mapToGlobal(pos));
     }
-}
-
-void MyGraphView::addRoadSlot(){
-    status = waitingForRoadEndPoint;
 
 }
 
-void MyGraphView::mouseDoubleClickEvent(QMouseEvent *event)
-{
-    if (EmptyPoint *end = dynamic_cast<EmptyPoint*>(itemAt(event->pos()))){
-        if (end != nullptr && status == waitingForRoadEndPoint) {
-            EmptyPoint *start = dynamic_cast<EmptyPoint*>(itemAt(lastClickedRightMouseButtonPos));
-            if (start != end){
-                if (!hasRoad(end, start->getRoads())){
-                    DialogRoad *d = new DialogRoad(this);
-                    if (d->exec() == QDialog::Accepted){
-                        Road *r = new Road(start, end, lastClickedRightMouseButtonPos, event->pos(), d->getKm(), d->getPrice());
-                        addRoad(r);
-                        start->addRoad(r);
-                        end->addRoad(r);
-                        scene->removeItem(start);
-                        scene->addItem(start);
-                        scene->removeItem(end);
-                        scene->addItem(end);
-                        scene->update();
-                    }
-                } else {
-                    QErrorMessage *e = new QErrorMessage(this);
-                    e->setWindowTitle("Ошибка создания дороги");
-                    e->showMessage("Такая дорога уже существует!");
-                }
-            } else {
-                QErrorMessage *e = new QErrorMessage(this);
-                e->setWindowTitle("Ошибка создания дороги");
-                e->showMessage("Нельзя провести дорогу в ту же точку");
-            }
-        }
-    }
-    status = free;
-}
 
 void MyGraphView::addPointSlot(){
     addPoint(new EmptyPoint(lastClickedRightMouseButtonPos));
+    updateNumbers();
 }
 
 void MyGraphView::deletePointSlot(){
     deletePoint(lastClickedRightMouseButtonPos);
+    updateNumbers();
 }
 
 void MyGraphView::addOfficeSlot(){
     addOffice(new Office(lastClickedRightMouseButtonPos));
+    updateNumbers();
 }
 
 void MyGraphView::addGarageSlot(){
     addGarage(new Garage(lastClickedRightMouseButtonPos));
+    updateNumbers();
 }
 
 
@@ -157,6 +131,7 @@ void MyGraphView::delyanaDialogSlot(){
     if (d->exec() == QDialog::Accepted){
         addDelyan(new Delyana(lastClickedRightMouseButtonPos, d->getCpd(), d->getCurr(), d->getPrice()));
     }
+    updateNumbers();
 }
 
 void MyGraphView::addDelyan(Delyana *d){
@@ -182,20 +157,56 @@ void MyGraphView::addGarage(Garage *g){
 
 void MyGraphView::setSceneStatusVector(){
     if (this->g == nullptr){
+
         QErrorMessage *e = new QErrorMessage(this);
         e->setWindowTitle("Ошибка запуска приложения");
         e->showMessage("На карте нет гаража!");
+
     } else {
-        spin->setEnabled(true);
-        btn->setEnabled(false);
-        connect(this->spin, SIGNAL(valueChanged(int)), this, SLOT(updateSceneStatus(int)));
-        for (Office *f: offices){
-            connect(f, SIGNAL(createOrder(const Office&, unsigned int)), g, SLOT(getOrder(const Office&, unsigned int)));
+
+        QList <EmptyPoint*>* list = new QList <EmptyPoint*>;
+
+        for (QGraphicsItem *item: scene->items()){
+
+            if (dynamic_cast<EmptyPoint*>(item)){
+                EmptyPoint* e = dynamic_cast<EmptyPoint*>(item);
+                list->push_back(e);
+            }
         }
 
-        for (Truck *t: g->getTrucks()){
-            scene->addItem(t);
-            t->setVisible(false);
+        int * count = new int;
+        *count = list->length();
+
+        RoadLengthTableDialog *roadLengthDialog = new RoadLengthTableDialog(nullptr, count);
+        if (roadLengthDialog->exec() == QDialog::Accepted){
+
+            QVector<QVector<int>> kmMatrix = roadLengthDialog->getKmMatrix();
+            RoadPriceTableDialog *roadPriceDialog = new RoadPriceTableDialog(nullptr, &kmMatrix, count);
+
+            if (roadPriceDialog->exec() == QDialog::Accepted){
+
+                QVector<QVector<int>> priceMatrix  = roadPriceDialog->getPriceMatrix();
+
+                for (int i = 1; i < list->length(); i++){
+                    for (int j = 0; j < i; j ++){
+                        if (kmMatrix.at(i).at(j) != 0){
+                            addRoad(new Road(list->at(i), list->at(j), list->at(i)->getPos(), list->at(j)->getPos(), kmMatrix.at(i).at(j), priceMatrix.at(i).at(j)));
+                        }
+                    }
+                }
+
+                spin->setEnabled(true);
+                btn->setEnabled(false);
+                connect(this->spin, SIGNAL(valueChanged(int)), this, SLOT(updateSceneStatus(int)));
+
+                for (Office *f: offices){
+                    connect(f, SIGNAL(createOrder(Office*, unsigned int)), g, SLOT(getOrder(Office*, unsigned int)));
+                }
+                for (Truck *t: g->getTrucks()){
+                    scene->addItem(t);
+                    t->setVisible(false);
+                }
+            }
         }
     }
 }

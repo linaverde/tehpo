@@ -32,8 +32,6 @@ public:
 
 
 private:
-    enum Status {free, waitingForRoadEndPoint};
-    Status status;
 
     QGraphicsScene *scene;
     QVector <Road*> roads;
@@ -45,7 +43,7 @@ private:
     QSpinBox *spin;
     QPushButton* btn;
 
-
+    void updateNumbers();
 
 public Q_SLOTS:
     void showContextMenu(const QPoint &pos);
@@ -53,9 +51,7 @@ public Q_SLOTS:
     void addOfficeSlot();
     void deletePointSlot();
     void delyanaDialogSlot();
-    void addRoadSlot();
     void addGarageSlot();
-    void mouseDoubleClickEvent(QMouseEvent *event) override;
     void setSceneStatusVector();
     void updateSceneStatus(int i);
 };
