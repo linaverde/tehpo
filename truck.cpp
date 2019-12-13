@@ -77,14 +77,15 @@ void Truck::getOrder(Office *office, unsigned int nForest){
     if (!way.isEmpty()){
         currDestinationDelyana = dynamic_cast<Delyana*>(way.last());
         QList <EmptyPoint*> wayBack = createWayToOffice(way.last());
-        way += wayBack;
-        if (!way.isEmpty()){
+        if (!wayBack.isEmpty()){
+            way += wayBack;
             currentWay = calculateCurrWayPoints(way);
             s = out;
             this->nForest = nForest;
             this->setVisible(true);
         }
     }
+}
 
 }
 
